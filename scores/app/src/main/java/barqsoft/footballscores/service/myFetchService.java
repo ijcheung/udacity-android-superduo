@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.Vector;
 
+import barqsoft.footballscores.BuildConfig;
 import barqsoft.footballscores.DatabaseContract;
 import barqsoft.footballscores.R;
 
@@ -63,12 +64,12 @@ public class myFetchService extends IntentService
             URL fetch = new URL(fetch_build.toString());
             m_connection = (HttpURLConnection) fetch.openConnection();
             m_connection.setRequestMethod("GET");
-            m_connection.addRequestProperty("X-Auth-Token",getString(R.string.api_key));
+            m_connection.addRequestProperty("X-Auth-Token", BuildConfig.FOOTBALL_DATA_API_KEY);
             m_connection.connect();
 
             // Read the input stream into a String
             InputStream inputStream = m_connection.getInputStream();
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
             if (inputStream == null) {
                 // Nothing to do.
                 return;
@@ -80,7 +81,7 @@ public class myFetchService extends IntentService
                 // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
                 // But it does make debugging a *lot* easier if you print out the completed
                 // buffer for debugging.
-                buffer.append(line + "\n");
+                buffer.append(line).append("\n");
             }
             if (buffer.length() == 0) {
                 // Stream was empty.  No point in parsing.
