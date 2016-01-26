@@ -23,16 +23,16 @@ import java.util.TimeZone;
 import java.util.Vector;
 
 import barqsoft.footballscores.BuildConfig;
-import barqsoft.footballscores.DatabaseContract;
+import barqsoft.footballscores.provider.DatabaseContract;
 import barqsoft.footballscores.R;
 
 /**
  * Created by yehya khaled on 3/2/2015.
  */
-public class myFetchService extends IntentService
+public class MyFetchService extends IntentService
 {
     public static final String LOG_TAG = "myFetchService";
-    public myFetchService()
+    public MyFetchService()
     {
         super("myFetchService");
     }
