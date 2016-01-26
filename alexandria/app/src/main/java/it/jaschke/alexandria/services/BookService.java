@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -22,6 +23,7 @@ import java.net.URL;
 import it.jaschke.alexandria.MainActivity;
 import it.jaschke.alexandria.R;
 import it.jaschke.alexandria.data.AlexandriaContract;
+import it.jaschke.alexandria.util.Utilities;
 
 
 /**
@@ -38,8 +40,11 @@ public class BookService extends IntentService {
 
     public static final String EAN = "it.jaschke.alexandria.services.extra.EAN";
 
+    Handler mMainThreadHandler;
+
     public BookService() {
         super("Alexandria");
+        mMainThreadHandler = new Handler();
     }
 
     @Override
@@ -129,7 +134,13 @@ public class BookService extends IntentService {
             }
             bookJsonString = buffer.toString();
         } catch (Exception e) {
-            Log.e(LOG_TAG, "Error ", e);
+            mMainThreadHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Utilities.showError(getApplicationContext(), R.string.error_connection);
+                }
+            });
+            return;
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -197,7 +208,12 @@ public class BookService extends IntentService {
             }
 
         } catch (JSONException e) {
-            Log.e(LOG_TAG, "Error ", e);
+            mMainThreadHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Utilities.showError(getApplicationContext(), R.string.error_format);
+                }
+            });
         }
     }
 
