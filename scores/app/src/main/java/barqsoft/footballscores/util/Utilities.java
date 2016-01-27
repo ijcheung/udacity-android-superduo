@@ -12,50 +12,43 @@ public class Utilities
     public static final int CHAMPIONS_LEAGUE = 362;
     public static final int PRIMERA_DIVISION = 358;
     public static final int BUNDESLIGA = 351;
-    public static String getLeague(int league_num)
+    public static int getLeague(int league_num)
     {
         switch (league_num)
         {
-            case SERIE_A : return "Seria A";
-            case PREMIER_LEGAUE : return "Premier League";
-            case CHAMPIONS_LEAGUE : return "UEFA Champions League";
-            case PRIMERA_DIVISION : return "Primera Division";
-            case BUNDESLIGA : return "Bundesliga";
-            default: return "Not known League Please report";
+            case SERIE_A : return R.string.league_seriaa;
+            case PREMIER_LEGAUE : return R.string.league_premier;
+            case CHAMPIONS_LEAGUE : return R.string.league_champions;
+            case PRIMERA_DIVISION : return R.string.league_primeradivison;
+            case BUNDESLIGA : return R.string.league_bundesliga;
+            default: return R.string.league_unknown;
         }
     }
-    public static String getMatchDay(int match_day,int league_num)
+    public static int getChampionsLeagueMatchDay(int match_day, int league_num)
     {
-        if(league_num == CHAMPIONS_LEAGUE)
+        if (match_day <= 6)
         {
-            if (match_day <= 6)
-            {
-                return "Group Stages, Matchday : 6";
-            }
-            else if(match_day == 7 || match_day == 8)
-            {
-                return "First Knockout round";
-            }
-            else if(match_day == 9 || match_day == 10)
-            {
-                return "QuarterFinal";
-            }
-            else if(match_day == 11 || match_day == 12)
-            {
-                return "SemiFinal";
-            }
-            else
-            {
-                return "Final";
-            }
+            return R.string.matchday_champion_6;
+        }
+        else if(match_day == 7 || match_day == 8)
+        {
+            return R.string.matchday_champion_7_8;
+        }
+        else if(match_day == 9 || match_day == 10)
+        {
+            return R.string.matchday_champion_9_10;
+        }
+        else if(match_day == 11 || match_day == 12)
+        {
+            return R.string.matchday_champion_11_12;
         }
         else
         {
-            return "Matchday : " + String.valueOf(match_day);
+            return R.string.matchday_champion_final;
         }
     }
 
-    public static String getScores(int home_goals,int awaygoals)
+    public static String getScores(int home_goals, int awaygoals)
     {
         if(home_goals < 0 || awaygoals < 0)
         {

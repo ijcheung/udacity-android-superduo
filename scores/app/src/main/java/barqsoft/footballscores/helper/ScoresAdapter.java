@@ -2,6 +2,7 @@ package barqsoft.footballscores.helper;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
@@ -29,9 +30,13 @@ public class ScoresAdapter extends CursorAdapter
     public static final int COL_MATCHTIME = 2;
     public double detail_match_id = 0;
     private String FOOTBALL_SCORES_HASHTAG = "#Football_Scores";
+    private Resources mResources;
+
     public ScoresAdapter(Context context, Cursor cursor, int flags)
     {
         super(context,cursor,flags);
+
+        mResources = context.getResources();
     }
 
     @Override
@@ -71,10 +76,19 @@ public class ScoresAdapter extends CursorAdapter
             container.addView(v, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
                     , ViewGroup.LayoutParams.MATCH_PARENT));
             TextView match_day = (TextView) v.findViewById(R.id.matchday_textview);
-            match_day.setText(Utilities.getMatchDay(cursor.getInt(COL_MATCHDAY),
-                    cursor.getInt(COL_LEAGUE)));
-            TextView league = (TextView) v.findViewById(R.id.league_textview);
-            league.setText(Utilities.getLeague(cursor.getInt(COL_LEAGUE)));
+            int league = cursor.getInt(COL_LEAGUE);
+            if(league == Utilities.CHAMPIONS_LEAGUE)
+            {
+                match_day.setText(Utilities.getChampionsLeagueMatchDay(cursor.getInt(COL_MATCHDAY),
+                        cursor.getInt(COL_LEAGUE)));
+            }
+            else
+            {
+                match_day.setText(mResources.getString(R.string.matchday_default, cursor.getInt(COL_MATCHDAY)));
+            }
+
+            TextView league_textview = (TextView) v.findViewById(R.id.league_textview);
+            league_textview.setText(Utilities.getLeague(league));
             Button share_button = (Button) v.findViewById(R.id.share_button);
             share_button.setOnClickListener(new View.OnClickListener() {
                 @Override
