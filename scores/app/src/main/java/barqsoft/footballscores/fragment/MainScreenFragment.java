@@ -17,7 +17,7 @@ import barqsoft.footballscores.R;
 import barqsoft.footballscores.helper.ViewHolder;
 import barqsoft.footballscores.activity.MainActivity;
 import barqsoft.footballscores.helper.ScoresAdapter;
-import barqsoft.footballscores.provider.DatabaseContract;
+import barqsoft.footballscores.provider.ScoresContract;
 import barqsoft.footballscores.service.MyFetchService;
 
 /**
@@ -70,7 +70,7 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
     {
-        return new CursorLoader(getActivity(), DatabaseContract.scores_table.buildScoreWithDate(),
+        return new CursorLoader(getActivity(), ScoresContract.ScoresEntry.buildScoreWithDate(),
                 null,null,fragmentdate,null);
     }
 

@@ -19,18 +19,18 @@ public class ScoresDBHelper extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        final String CreateScoresTable = "CREATE TABLE " + DatabaseContract.SCORES_TABLE + " ("
-                + DatabaseContract.scores_table._ID + " INTEGER PRIMARY KEY,"
-                + DatabaseContract.scores_table.DATE_COL + " TEXT NOT NULL,"
-                + DatabaseContract.scores_table.TIME_COL + " INTEGER NOT NULL,"
-                + DatabaseContract.scores_table.HOME_COL + " TEXT NOT NULL,"
-                + DatabaseContract.scores_table.AWAY_COL + " TEXT NOT NULL,"
-                + DatabaseContract.scores_table.LEAGUE_COL + " INTEGER NOT NULL,"
-                + DatabaseContract.scores_table.HOME_GOALS_COL + " TEXT NOT NULL,"
-                + DatabaseContract.scores_table.AWAY_GOALS_COL + " TEXT NOT NULL,"
-                + DatabaseContract.scores_table.MATCH_ID + " INTEGER NOT NULL,"
-                + DatabaseContract.scores_table.MATCH_DAY + " INTEGER NOT NULL,"
-                + " UNIQUE ("+ DatabaseContract.scores_table.MATCH_ID+") ON CONFLICT REPLACE"
+        final String CreateScoresTable = "CREATE TABLE " + ScoresContract.SCORES_TABLE + " ("
+                + ScoresContract.ScoresEntry._ID + " INTEGER PRIMARY KEY,"
+                + ScoresContract.ScoresEntry.DATE_COL + " TEXT NOT NULL,"
+                + ScoresContract.ScoresEntry.TIME_COL + " INTEGER NOT NULL,"
+                + ScoresContract.ScoresEntry.HOME_COL + " TEXT NOT NULL,"
+                + ScoresContract.ScoresEntry.AWAY_COL + " TEXT NOT NULL,"
+                + ScoresContract.ScoresEntry.LEAGUE_COL + " INTEGER NOT NULL,"
+                + ScoresContract.ScoresEntry.HOME_GOALS_COL + " TEXT NOT NULL,"
+                + ScoresContract.ScoresEntry.AWAY_GOALS_COL + " TEXT NOT NULL,"
+                + ScoresContract.ScoresEntry.MATCH_ID + " INTEGER NOT NULL,"
+                + ScoresContract.ScoresEntry.MATCH_DAY + " INTEGER NOT NULL,"
+                + " UNIQUE ("+ ScoresContract.ScoresEntry.MATCH_ID+") ON CONFLICT REPLACE"
                 + " );";
         db.execSQL(CreateScoresTable);
     }
@@ -39,6 +39,6 @@ public class ScoresDBHelper extends SQLiteOpenHelper
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
         //Remove old values when upgrading.
-        db.execSQL("DROP TABLE IF EXISTS " + DatabaseContract.SCORES_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + ScoresContract.SCORES_TABLE);
     }
 }

@@ -7,10 +7,10 @@ import android.provider.BaseColumns;
 /**
  * Created by yehya khaled on 2/25/2015.
  */
-public class DatabaseContract
+public class ScoresContract
 {
     public static final String SCORES_TABLE = "scores_table";
-    public static final class scores_table implements BaseColumns
+    public static final class ScoresEntry implements BaseColumns
     {
         //Table data
         public static final String LEAGUE_COL = "league";

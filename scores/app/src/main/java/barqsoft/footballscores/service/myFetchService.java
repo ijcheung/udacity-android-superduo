@@ -23,7 +23,7 @@ import java.util.TimeZone;
 import java.util.Vector;
 
 import barqsoft.footballscores.BuildConfig;
-import barqsoft.footballscores.provider.DatabaseContract;
+import barqsoft.footballscores.provider.ScoresContract;
 import barqsoft.footballscores.R;
 
 /**
@@ -32,6 +32,9 @@ import barqsoft.footballscores.R;
 public class MyFetchService extends IntentService
 {
     public static final String LOG_TAG = "myFetchService";
+
+    public static final String ACTION_DATA_UPDATED = "barqsoft.footballscores.ACTION_DATA_UPDATED";
+
     public MyFetchService()
     {
         super("myFetchService");
@@ -238,15 +241,15 @@ public class MyFetchService extends IntentService
                     Away_goals = match_data.getJSONObject(RESULT).getString(AWAY_GOALS);
                     match_day = match_data.getString(MATCH_DAY);
                     ContentValues match_values = new ContentValues();
-                    match_values.put(DatabaseContract.scores_table.MATCH_ID,match_id);
-                    match_values.put(DatabaseContract.scores_table.DATE_COL,mDate);
-                    match_values.put(DatabaseContract.scores_table.TIME_COL,mTime);
-                    match_values.put(DatabaseContract.scores_table.HOME_COL,Home);
-                    match_values.put(DatabaseContract.scores_table.AWAY_COL,Away);
-                    match_values.put(DatabaseContract.scores_table.HOME_GOALS_COL,Home_goals);
-                    match_values.put(DatabaseContract.scores_table.AWAY_GOALS_COL,Away_goals);
-                    match_values.put(DatabaseContract.scores_table.LEAGUE_COL,League);
-                    match_values.put(DatabaseContract.scores_table.MATCH_DAY,match_day);
+                    match_values.put(ScoresContract.ScoresEntry.MATCH_ID,match_id);
+                    match_values.put(ScoresContract.ScoresEntry.DATE_COL,mDate);
+                    match_values.put(ScoresContract.ScoresEntry.TIME_COL,mTime);
+                    match_values.put(ScoresContract.ScoresEntry.HOME_COL,Home);
+                    match_values.put(ScoresContract.ScoresEntry.AWAY_COL,Away);
+                    match_values.put(ScoresContract.ScoresEntry.HOME_GOALS_COL,Home_goals);
+                    match_values.put(ScoresContract.ScoresEntry.AWAY_GOALS_COL,Away_goals);
+                    match_values.put(ScoresContract.ScoresEntry.LEAGUE_COL,League);
+                    match_values.put(ScoresContract.ScoresEntry.MATCH_DAY,match_day);
                     //log spam
 
                     //Log.v(LOG_TAG,match_id);
@@ -264,15 +267,22 @@ public class MyFetchService extends IntentService
             ContentValues[] insert_data = new ContentValues[values.size()];
             values.toArray(insert_data);
             inserted_data = mContext.getContentResolver().bulkInsert(
-                    DatabaseContract.BASE_CONTENT_URI,insert_data);
+                    ScoresContract.BASE_CONTENT_URI,insert_data);
 
             //Log.v(LOG_TAG,"Succesfully Inserted : " + String.valueOf(inserted_data));
+            updateWidgets();
         }
         catch (JSONException e)
         {
             Log.e(LOG_TAG,e.getMessage());
         }
 
+    }
+
+    private void updateWidgets() {
+        // Setting the package ensures that only components in our app will receive the broadcast
+        Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED).setPackage(getPackageName());
+        sendBroadcast(dataUpdatedIntent);
     }
 }
 
